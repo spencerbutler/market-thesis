@@ -1,0 +1,624 @@
+{
+  "meta": {
+    "document_type": "dashboard_spec",
+    "name": "Thesis Dashboard Spec",
+    "version": "v1.0_20260118",
+    "timezone": "America/Chicago",
+    "source_of_truth": "v1.7-HR_20260118",
+    "notes": [
+      "UI/agent-facing specification to build a thesis monitoring dashboard.",
+      "This spec defines WHAT to display and HOW to interpret signals; it does not include live data.",
+      "All thresholds must be traceable to HR thesis and DATA patch conventions."
+    ]
+  },
+  "data_contract": {
+    "required_inputs": {
+      "market_prices": [
+        {
+          "symbol": "SPY",
+          "type": "equity_etf"
+        },
+        {
+          "symbol": "IWM",
+          "type": "equity_etf"
+        },
+        {
+          "symbol": "XLI",
+          "type": "equity_etf"
+        },
+        {
+          "symbol": "XLB",
+          "type": "equity_etf"
+        },
+        {
+          "symbol": "XLU",
+          "type": "equity_etf"
+        },
+        {
+          "symbol": "XLP",
+          "type": "equity_etf"
+        },
+        {
+          "symbol": "XLY",
+          "type": "equity_etf"
+        },
+        {
+          "symbol": "HYG",
+          "type": "bond_etf"
+        },
+        {
+          "symbol": "LQD",
+          "type": "bond_etf"
+        },
+        {
+          "symbol": "^TNX",
+          "type": "rate_index"
+        },
+        {
+          "symbol": "CAT",
+          "type": "equity"
+        },
+        {
+          "symbol": "DOW",
+          "type": "equity"
+        },
+        {
+          "symbol": "FCX",
+          "type": "equity"
+        },
+        {
+          "symbol": "RF",
+          "type": "equity"
+        },
+        {
+          "symbol": "HBAN",
+          "type": "equity"
+        },
+        {
+          "symbol": "LOW",
+          "type": "equity"
+        },
+        {
+          "symbol": "O",
+          "type": "equity"
+        },
+        {
+          "symbol": "PLD",
+          "type": "equity"
+        },
+        {
+          "symbol": "PPL",
+          "type": "equity"
+        },
+        {
+          "symbol": "SYY",
+          "type": "equity"
+        },
+        {
+          "symbol": "JNJ",
+          "type": "equity"
+        }
+      ],
+      "commodities": [
+        {
+          "symbol": "COPPER",
+          "type": "spot_or_front_month",
+          "unit": "USD_per_lb",
+          "aliases": [
+            "/HG"
+          ]
+        },
+        {
+          "symbol": "SILVER",
+          "type": "spot_or_front_month",
+          "unit": "USD_per_oz",
+          "aliases": [
+            "/SI"
+          ]
+        },
+        {
+          "symbol": "GOLD",
+          "type": "spot_or_front_month",
+          "unit": "USD_per_oz",
+          "aliases": [
+            "/GC"
+          ]
+        },
+        {
+          "symbol": "OIL",
+          "type": "spot_or_front_month",
+          "unit": "USD_per_bbl",
+          "aliases": [
+            "/CL"
+          ]
+        }
+      ],
+      "macro": [
+        {
+          "series": "UNEMPLOYMENT_RATE",
+          "freq": "monthly",
+          "source_preference": [
+            "BLS"
+          ]
+        },
+        {
+          "series": "WAGE_GROWTH_YOY",
+          "freq": "monthly",
+          "source_preference": [
+            "BLS"
+          ]
+        },
+        {
+          "series": "INITIAL_CLAIMS_4WK_AVG",
+          "freq": "weekly",
+          "source_preference": [
+            "DOL"
+          ]
+        },
+        {
+          "series": "ISM_PMI",
+          "freq": "monthly",
+          "source_preference": [
+            "ISM"
+          ]
+        },
+        {
+          "series": "PPI_HEADLINE_YOY",
+          "freq": "monthly",
+          "source_preference": [
+            "BLS"
+          ]
+        },
+        {
+          "series": "PPI_METALS_YOY",
+          "freq": "monthly",
+          "source_preference": [
+            "BLS"
+          ]
+        },
+        {
+          "series": "PPI_ENERGY_YOY",
+          "freq": "monthly",
+          "source_preference": [
+            "BLS"
+          ]
+        },
+        {
+          "series": "PPI_CONSTRUCTION_YOY",
+          "freq": "monthly",
+          "source_preference": [
+            "BLS"
+          ]
+        },
+        {
+          "series": "EXISTING_HOME_SALES",
+          "freq": "monthly",
+          "source_preference": [
+            "NAR"
+          ]
+        },
+        {
+          "series": "NEW_HOME_SALES",
+          "freq": "monthly",
+          "source_preference": [
+            "Census"
+          ]
+        },
+        {
+          "series": "MONTHS_SUPPLY",
+          "freq": "monthly",
+          "source_preference": [
+            "Census"
+          ]
+        },
+        {
+          "series": "MORTGAGE_RATE_30Y",
+          "freq": "weekly",
+          "source_preference": [
+            "FreddieMac"
+          ]
+        }
+      ],
+      "credit": [
+        {
+          "series": "SMALL_BUSINESS_LOAN_GROWTH_YOY",
+          "freq": "weekly_or_monthly",
+          "source_preference": [
+            "FederalReserve_H8",
+            "FDIC"
+          ]
+        },
+        {
+          "series": "CREDIT_CONDITIONS_PROXY",
+          "freq": "daily",
+          "definition": "HYG/LQD ratio or spread proxy"
+        }
+      ]
+    },
+    "required_history": {
+      "market_prices": {
+        "lookback_days": 365,
+        "min_required_days": 120
+      },
+      "commodities": {
+        "lookback_days": 365,
+        "min_required_days": 120
+      },
+      "macro": {
+        "lookback_months": 24,
+        "min_required_points": 12
+      }
+    }
+  },
+  "computed_indicators": [
+    {
+      "id": "RS_50D",
+      "name": "50-day Relative Strength vs SPY",
+      "type": "time_series",
+      "inputs": {
+        "primary_symbol": "<SYMBOL>",
+        "benchmark_symbol": "SPY"
+      },
+      "formula": "RS = (pct_change(primary) - pct_change(benchmark)); RS_SMA50 = SMA(RS,50)",
+      "outputs": [
+        "RS",
+        "RS_SMA50",
+        "RS_SMA50_slope"
+      ]
+    },
+    {
+      "id": "CREDIT_DIVERGENCE",
+      "name": "Credit Divergence Proxy",
+      "type": "time_series",
+      "inputs": {
+        "symbols": [
+          "HYG",
+          "LQD"
+        ]
+      },
+      "formula": "proxy = (HYG / LQD); trend = slope(SMA(proxy,50))",
+      "outputs": [
+        "proxy",
+        "trend"
+      ]
+    },
+    {
+      "id": "SMA_LEVELS",
+      "name": "Moving Averages",
+      "type": "time_series",
+      "inputs": {
+        "symbol": "<SYMBOL>"
+      },
+      "formula": "SMA20, SMA50, SMA200",
+      "outputs": [
+        "SMA20",
+        "SMA50",
+        "SMA200"
+      ]
+    }
+  ],
+  "dashboard": {
+    "layout": {
+      "pages": [
+        {
+          "id": "overview",
+          "title": "Overview",
+          "cards": [
+            "thesis_health",
+            "rotation_radar",
+            "credit_panel",
+            "macro_panel",
+            "portfolio_targets"
+          ]
+        },
+        {
+          "id": "rotation",
+          "title": "Rotation & Relative Strength",
+          "cards": [
+            "rs_grid",
+            "sector_sequence",
+            "small_caps_focus"
+          ]
+        },
+        {
+          "id": "commodities",
+          "title": "Commodities & Regime",
+          "cards": [
+            "commodity_prices",
+            "commodity_triggers",
+            "ppi_linkage"
+          ]
+        },
+        {
+          "id": "portfolio",
+          "title": "Portfolio & Risk",
+          "cards": [
+            "current_vs_target",
+            "concentration",
+            "income_estimates",
+            "trade_plan"
+          ]
+        }
+      ]
+    },
+    "cards": {
+      "thesis_health": {
+        "type": "status_summary",
+        "title": "Thesis Health",
+        "status_levels": [
+          "GREEN",
+          "YELLOW",
+          "RED"
+        ],
+        "rules": [
+          {
+            "if_all": [
+              "labor_ok",
+              "credit_ok",
+              "rotation_ok"
+            ],
+            "then": "GREEN"
+          },
+          {
+            "if_any": [
+              "one_major_red_flag"
+            ],
+            "then": "YELLOW"
+          },
+          {
+            "if_any": [
+              "multiple_major_red_flags"
+            ],
+            "then": "RED"
+          }
+        ],
+        "explainers": {
+          "GREEN": "Thesis intact; follow allocation discipline.",
+          "YELLOW": "Mixed signals; reduce risk and wait for confirmation.",
+          "RED": "Thesis failing; rotate defensively per HR."
+        }
+      },
+      "rotation_radar": {
+        "type": "multi_series_chart",
+        "title": "Rotation Radar (RS vs SPY)",
+        "series": [
+          {
+            "symbol": "XLB",
+            "indicator": "RS_50D"
+          },
+          {
+            "symbol": "XLI",
+            "indicator": "RS_50D"
+          },
+          {
+            "symbol": "IWM",
+            "indicator": "RS_50D"
+          },
+          {
+            "symbol": "RF",
+            "indicator": "RS_50D"
+          },
+          {
+            "symbol": "HBAN",
+            "indicator": "RS_50D"
+          }
+        ],
+        "annotations": [
+          {
+            "text": "Rotation confirms when RS_SMA50 slope positive for XLB+XLI+IWM",
+            "level": "info"
+          }
+        ]
+      },
+      "credit_panel": {
+        "type": "chart_plus_thresholds",
+        "title": "Credit Conditions",
+        "primary": {
+          "indicator": "CREDIT_DIVERGENCE"
+        },
+        "thresholds": [
+          {
+            "id": "credit_warn",
+            "type": "trend",
+            "operator": "<",
+            "value": 0,
+            "severity": "YELLOW",
+            "message": "Credit tightening risk rising"
+          },
+          {
+            "id": "credit_danger",
+            "type": "trend",
+            "operator": "<<",
+            "value": 0,
+            "severity": "RED",
+            "message": "Sustained tightening; reduce cyclicals/banks"
+          }
+        ]
+      },
+      "macro_panel": {
+        "type": "kpi_grid",
+        "title": "Macro KPIs (Thesis Gates)",
+        "kpis": [
+          {
+            "id": "unemployment_rate",
+            "series": "UNEMPLOYMENT_RATE",
+            "green": "<4.5",
+            "red": ">=4.5 (2 mo)"
+          },
+          {
+            "id": "wage_growth",
+            "series": "WAGE_GROWTH_YOY",
+            "green": ">=3.0",
+            "red": "<2.5"
+          },
+          {
+            "id": "claims",
+            "series": "INITIAL_CLAIMS_4WK_AVG",
+            "green": "<250k",
+            "red": ">=300k"
+          },
+          {
+            "id": "ism",
+            "series": "ISM_PMI",
+            "green": ">=52",
+            "red": "<48"
+          }
+        ]
+      },
+      "commodity_triggers": {
+        "type": "rule_list",
+        "title": "Commodity Triggers",
+        "rules": [
+          {
+            "id": "fcx_reduce",
+            "if": "COPPER < 4.00 AND SILVER < 28",
+            "then": "Reduce FCX exposure",
+            "severity": "RED"
+          },
+          {
+            "id": "copper_confirm",
+            "if": "COPPER > 4.50 sustained",
+            "then": "Copper regime confirms materials lead",
+            "severity": "GREEN"
+          }
+        ]
+      },
+      "portfolio_targets": {
+        "type": "allocation_table",
+        "title": "Target Allocation (v1.7)",
+        "source": "v1.7-HR_20260118",
+        "rows": [
+          {
+            "ticker": "CAT",
+            "target_pct": 23
+          },
+          {
+            "ticker": "DOW",
+            "target_pct": 6
+          },
+          {
+            "ticker": "FCX",
+            "target_pct": 5
+          },
+          {
+            "ticker": "RF",
+            "target_pct": 6
+          },
+          {
+            "ticker": "HBAN",
+            "target_pct": 6
+          },
+          {
+            "ticker": "LOW",
+            "target_pct": 5
+          },
+          {
+            "ticker": "O",
+            "target_pct": 10
+          },
+          {
+            "ticker": "PLD",
+            "target_pct": 8
+          },
+          {
+            "ticker": "PPL",
+            "target_pct": 6
+          },
+          {
+            "ticker": "SYY",
+            "target_pct": 5
+          },
+          {
+            "ticker": "JNJ",
+            "target_pct": 10
+          },
+          {
+            "ticker": "IWM",
+            "target_pct": 10
+          }
+        ]
+      },
+      "concentration": {
+        "type": "rule_list",
+        "title": "Concentration Rules",
+        "rules": [
+          {
+            "id": "max_single_name",
+            "if": "any_position_weight > 25%",
+            "then": "Trim to <=25%",
+            "severity": "YELLOW"
+          },
+          {
+            "id": "cat_specific",
+            "if": "CAT_weight > 25%",
+            "then": "Trim CAT",
+            "severity": "YELLOW"
+          }
+        ]
+      },
+      "trade_plan": {
+        "type": "checklist",
+        "title": "Implementation Plan (High-Level)",
+        "items": [
+          {
+            "text": "Trim CAT to 23% target",
+            "source": "v1.7 HR"
+          },
+          {
+            "text": "Add FCX to 5% target",
+            "source": "v1.7 HR"
+          },
+          {
+            "text": "Add RF to 6% target",
+            "source": "v1.7 HR"
+          },
+          {
+            "text": "Add HBAN to 6% target",
+            "source": "v1.7 HR"
+          },
+          {
+            "text": "Add JNJ to 10% target",
+            "source": "v1.7 HR"
+          },
+          {
+            "text": "Add IWM sleeve to 10% target",
+            "source": "v1.7 HR"
+          }
+        ]
+      }
+    }
+  },
+  "alerting": {
+    "channels": [
+      "ui_badge",
+      "email_optional",
+      "webhook_optional"
+    ],
+    "alerts": [
+      {
+        "id": "ism_red",
+        "condition": "ISM_PMI < 48",
+        "severity": "RED",
+        "message": "Manufacturing contraction; trim cyclicals per HR"
+      },
+      {
+        "id": "labor_red",
+        "condition": "UNEMPLOYMENT_RATE >= 4.5 for 2 months",
+        "severity": "RED",
+        "message": "Labor deterioration; rotate defensively"
+      },
+      {
+        "id": "commodities_red",
+        "condition": "COPPER < 4.00 AND SILVER < 28",
+        "severity": "RED",
+        "message": "Commodity regime breakdown; reduce FCX/materials"
+      },
+      {
+        "id": "credit_yellow",
+        "condition": "CREDIT_DIVERGENCE trend < 0",
+        "severity": "YELLOW",
+        "message": "Credit tightening; tighten risk controls"
+      }
+    ]
+  }
+}
