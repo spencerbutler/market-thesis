@@ -1,0 +1,13 @@
+{
+  "latest": {
+    "hr": "v1.7-HR_20260118.md",
+    "json": "v1.7-JSON_20260118.json",
+    "agent": "v1.7-AGENT_20260118.json",
+    "dashboard_spec": "DASHBOARD_SPEC_v1.0_20260118.json",
+    "data_patch_latest": "v1.6.1-DATA_20260118.md"
+  },
+  "notes": [
+    "This file is the single stable entry point for tools and UI.",
+    "Update only when promoting a new thesis version."
+  ]
+}
