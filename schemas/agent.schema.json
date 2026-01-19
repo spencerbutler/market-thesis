@@ -1,25 +1,91 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Agent Spec Schema",
+  "title": "Agent Spec JSON Schema",
   "type": "object",
   "required": [
-    "version",
-    "permissions"
+    "meta",
+    "agent_contract"
   ],
   "properties": {
-    "version": {
-      "type": "string"
-    },
-    "permissions": {
+    "meta": {
       "type": "object",
+      "required": [
+        "document_type",
+        "source_of_truth",
+        "version"
+      ],
       "properties": {
-        "read": {
-          "type": "array"
+        "document_type": {
+          "const": "agent_spec"
         },
-        "write": {
-          "type": "array"
+        "source_of_truth": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "compiled_date_local": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_as_of_utc": {
+          "type": "string"
         }
-      }
+      },
+      "additionalProperties": true
+    },
+    "agent_contract": {
+      "type": "object",
+      "required": [
+        "objective",
+        "guardrails",
+        "allowed_writes"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string"
+        },
+        "guardrails": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_writes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_reads": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "data_requirements": {
+      "type": "object"
+    },
+    "metrics_and_triggers": {
+      "type": "object"
+    },
+    "output_formats": {
+      "type": "object"
     }
-  }
+  },
+  "additionalProperties": true
 }

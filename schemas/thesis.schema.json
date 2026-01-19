@@ -3,21 +3,111 @@
   "title": "Thesis JSON Schema",
   "type": "object",
   "required": [
-    "source_hr",
-    "version"
+    "meta"
   ],
   "properties": {
-    "source_hr": {
-      "type": "string"
+    "meta": {
+      "type": "object",
+      "required": [
+        "document_type",
+        "source_of_truth",
+        "version"
+      ],
+      "properties": {
+        "document_type": {
+          "const": "thesis"
+        },
+        "source_of_truth": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "compiled_date_local": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_as_of_utc": {
+          "type": "string"
+        },
+        "data_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
     },
-    "version": {
-      "type": "string"
+    "investment_philosophy": {
+      "type": "object"
+    },
+    "policy_architecture": {
+      "type": "object"
+    },
+    "rotation_model": {
+      "type": "object"
     },
     "portfolio": {
-      "type": "array"
+      "type": "object",
+      "properties": {
+        "current_snapshot": {
+          "type": "object"
+        },
+        "target_allocation": {
+          "type": "object",
+          "properties": {
+            "weights": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "ticker",
+                  "target_weight_pct"
+                ],
+                "properties": {
+                  "ticker": {
+                    "type": "string"
+                  },
+                  "target_weight_pct": {
+                    "type": "number"
+                  },
+                  "sector": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
     },
-    "triggers": {
+    "monitoring": {
+      "type": "object"
+    },
+    "recommendations": {
+      "type": "object"
+    },
+    "warnings": {
       "type": "array"
     }
-  }
+  },
+  "additionalProperties": true
 }
