@@ -21,3 +21,5 @@ Thumbs.db
 # Virtual environments
 .venv/
 __pycache__/
+.tmp/
+.cache/
