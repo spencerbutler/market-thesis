@@ -57,7 +57,7 @@ def render_card(card_id: str):
         elif ctype in {"allocation_table"}:
             rows = card.get("rows", [])
             if rows:
-                st.dataframe(rows, use_container_width="stretch")
+                st.dataframe(rows, use_container_width=True)
             else:
                 st.info("No rows defined in spec.")
         elif ctype in {"rule_list"}:
