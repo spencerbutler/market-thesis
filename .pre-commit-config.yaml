@@ -2,8 +2,7 @@ repos:
   - repo: local
     hooks:
       - id: validate-thesis-artifacts
-        name: Validate thesis JSON/AGENT against schemas
-        entry: python3 scripts/regen.py
+        name: Validate thesis JSON/AGENT against schemas (latest HR)
+        entry: python3 scripts/validate_latest.py
         language: system
         pass_filenames: false
-        args: ["v1.7-HR_20260118.md", "--validate-only"]
