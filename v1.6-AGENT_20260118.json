@@ -1,0 +1,218 @@
+{
+  "meta": {
+    "document_type": "agent_spec",
+    "source_of_truth": "v1.6-HR_20260118",
+    "version": "v1.6-AGENT_20260118",
+    "compiled_date_local": "2026-01-18",
+    "timezone": "America/Chicago",
+    "status": "Working Copy",
+    "tags": [
+      "agent-consumable",
+      "institutional"
+    ],
+    "data_as_of_utc": "2026-01-17T01:15:00Z"
+  },
+  "agent_contract": {
+    "objective": "Maintain and update the 2026 rotation thesis using only verified data sources; output diffs to HR document and derived JSON; never introduce unverified policy claims as facts.",
+    "guardrails": [
+      "Do not invent prices, yields, macro data, or policy status.",
+      "If a field is unknown, set it to RESEARCH_REQUIRED and provide a concrete retrieval path.",
+      "Prefer primary sources (BLS, Census, Fed, SEC filings, issuer IR pages, ETF sponsors) over media.",
+      "Maintain separation between Fact / Estimate / Speculation."
+    ],
+    "update_cadence": {
+      "weekly": [
+        "relative_strength",
+        "commodities",
+        "rates",
+        "credit_spreads",
+        "key_positions"
+      ],
+      "monthly": [
+        "labor",
+        "ppi_cpi",
+        "ism_pmi",
+        "housing",
+        "loan_growth"
+      ],
+      "event_driven": [
+        "policy_enactment_or_repeal",
+        "earnings_revisions",
+        "midterm_poll_inflections"
+      ]
+    }
+  },
+  "data_requirements": {
+    "market_prices": {
+      "tickers": [
+        "CAT",
+        "SYY",
+        "LOW",
+        "O",
+        "PPL",
+        "PLD",
+        "DOW",
+        "KRE",
+        "FCX",
+        "JNJ",
+        "ABBV",
+        "URI",
+        "TSM",
+        "NUE",
+        "MP",
+        "SYM",
+        "SPY",
+        "IWM",
+        "XLI",
+        "XLB",
+        "XLU",
+        "XLP",
+        "XLY",
+        "HYG",
+        "LQD"
+      ],
+      "fields": [
+        "last_price",
+        "timestamp_utc"
+      ]
+    },
+    "dividends_and_yields": {
+      "fields": [
+        "annual_dividend_per_share",
+        "forward_yield",
+        "payout_frequency"
+      ],
+      "preferred_sources": [
+        "issuer_investor_relations",
+        "ETF_sponsor_page",
+        "SEC filings"
+      ],
+      "fallback_sources": [
+        "finance portals (verify)"
+      ]
+    },
+    "macro": {
+      "labor": [
+        "unemployment_rate",
+        "wage_growth_yoy",
+        "initial_claims_4wk_avg"
+      ],
+      "inflation": [
+        "PPI_headline_yoy",
+        "PPI_energy_yoy",
+        "PPI_metals_yoy",
+        "PPI_construction_yoy"
+      ],
+      "manufacturing": [
+        "ISM_PMI"
+      ],
+      "housing": [
+        "existing_home_sales",
+        "new_home_sales",
+        "months_supply_existing",
+        "months_supply_new",
+        "mortgage_rate_30y",
+        "mortgage_rate_distribution_lt3_lt4"
+      ],
+      "credit": [
+        "HYG_LQD_divergence_proxy",
+        "loan_growth_small_business",
+        "bank_credit_quality"
+      ]
+    },
+    "policy": {
+      "required_fields": [
+        "status",
+        "effective_date",
+        "sunset_date",
+        "reversal_risk",
+        "impacted_cohorts"
+      ],
+      "items": [
+        "No tax on tips",
+        "No tax on overtime",
+        "No tax on Social Security",
+        "Car loan interest deduction",
+        "Senior bonus deduction",
+        "Child Tax Credit",
+        "Standard deduction increases",
+        "SALT cap raised",
+        "Credit card interest cap",
+        "Fannie/Freddie mortgage purchases",
+        "50-year mortgage proposal",
+        "SNAP cuts",
+        "Small Business Deduction",
+        "Section 179 expensing cap",
+        "QBI deduction",
+        "Full expensing",
+        "Lender tax break",
+        "Ban on investment banks buying single-family homes",
+        "Icebreakers procurement",
+        "Air traffic control modernization",
+        "AI regulation ban (state-level)"
+      ]
+    }
+  },
+  "metrics_and_triggers": {
+    "primary_weekly": [
+      {
+        "name": "Rotation_RS",
+        "definition": "Slope of 50D RS for IWM, XLI, XLB, KRE vs SPY",
+        "red_flag": "All 3 (IWM,XLI,XLB) below falling 50D RS for 4+ weeks"
+      },
+      {
+        "name": "Commodities",
+        "definition": "Copper, silver, oil regime levels",
+        "red_flag": "Copper < 4.00 AND Silver < 28"
+      },
+      {
+        "name": "Rates",
+        "definition": "10Y yield trend",
+        "red_flag": "10Y > 4.75 for 4+ weeks"
+      },
+      {
+        "name": "Credit",
+        "definition": "HYG vs LQD proxy spread/divergence",
+        "red_flag": "Divergence beyond thesis threshold (to be calibrated)"
+      },
+      {
+        "name": "Labor",
+        "definition": "Unemployment/wages/claims",
+        "red_flag": "Unemployment > 4.5 (2 mo) OR wages <2.5% OR claims >300k (4wk avg)"
+      }
+    ],
+    "confirmation_signals": [
+      {
+        "signal": "IWM breakout",
+        "action": "Add IWM 5% sleeve (if in mandate)"
+      },
+      {
+        "signal": "KRE breaks prior highs",
+        "action": "Add 5–7% to regional bank sleeve"
+      },
+      {
+        "signal": "Copper > 5.00 sustained",
+        "action": "Add FCX 3–5%"
+      },
+      {
+        "signal": "First Fed cut (soft landing context)",
+        "action": "Add to rate-sensitive sleeve"
+      }
+    ]
+  },
+  "output_formats": {
+    "human_readable_patch": {
+      "format": "markdown",
+      "sections": "diff-only preferred",
+      "versioning": "increment patch"
+    },
+    "thesis_json": {
+      "format": "json",
+      "schema": "v1.6-JSON"
+    },
+    "agent_spec": {
+      "format": "json",
+      "schema": "v1.6-AGENT"
+    }
+  }
+}

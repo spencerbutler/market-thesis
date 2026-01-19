@@ -1,0 +1,499 @@
+{
+  "meta": {
+    "document_type": "thesis",
+    "source_of_truth": "v1.6-HR_20260118",
+    "version": "v1.6-JSON_20260118",
+    "compiled_date_local": "2026-01-18",
+    "timezone": "America/Chicago",
+    "status": "Working Copy",
+    "tags": [
+      "institutional-readable",
+      "human-readable-derived-json"
+    ],
+    "data_as_of_utc": "2026-01-17T01:15:00Z",
+    "data_notes": [
+      "Prices pulled via market data tool; dividend yields sourced from public dividend pages; see citations in chat log."
+    ]
+  },
+  "investment_philosophy": {
+    "selection_rule": "Only strongest stocks in strongest sectors; dividend yield + thesis alignment",
+    "horizon_months": [
+      12,
+      24
+    ],
+    "election_horizon_note": "Through November 2026 mid-terms",
+    "core_belief": "Capital rotation from growth/tech into value/cyclicals/industrials",
+    "critical_principle": "Ignore financial media narratives; use market data, price action, economic fundamentals"
+  },
+  "policy_architecture": {
+    "consumer_provisions": [
+      {
+        "name": "No tax on tips",
+        "cap_or_limit": "Up to $25k deduction",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "No tax on overtime",
+        "cap_or_limit": "Up to $12.5k individual / $25k joint",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "No tax on Social Security",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "Car loan interest deduction",
+        "cap_or_limit": "$10k, new vehicles",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "Senior bonus deduction",
+        "cap_or_limit": "$6k 65+, phase-out at $75k/$150k",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "Child Tax Credit",
+        "cap_or_limit": "$2,200",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "Standard deduction increases",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "SALT cap raised",
+        "cap_or_limit": "$40k for 5 years, income <$500k",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "Credit card interest cap",
+        "cap_or_limit": "10%, one year",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "Fannie/Freddie mortgage purchases",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "50-year mortgage proposal",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true,
+        "speculative": true
+      },
+      {
+        "name": "SNAP cuts",
+        "cap_or_limit": "$187B/10 years; 4M lose benefits",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      }
+    ],
+    "producer_provisions": [
+      {
+        "name": "Small Business Deduction",
+        "cap_or_limit": "20%, permanent",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "Section 179 expensing cap",
+        "cap_or_limit": "$2.5M doubled",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "QBI deduction",
+        "cap_or_limit": "Permanent, increased",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      },
+      {
+        "name": "Full expensing",
+        "cap_or_limit": "First-year equipment deduction",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "Lender tax break",
+        "cap_or_limit": "25% interest income excluded",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "Ban on investment banks buying single-family homes",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "MED"
+      },
+      {
+        "name": "Icebreakers procurement",
+        "cap_or_limit": "$9B; 16 vessels",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "LOW"
+      },
+      {
+        "name": "Air traffic control modernization",
+        "cap_or_limit": "$12.5B",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": "LOW"
+      },
+      {
+        "name": "AI regulation ban (state-level)",
+        "cap_or_limit": "10 years",
+        "status": "RESEARCH_REQUIRED",
+        "policy_dependent": true
+      }
+    ]
+  },
+  "rotation_model": {
+    "sequence": [
+      "Materials",
+      "Industrials",
+      "Utilities",
+      "Staples",
+      "Discretionary"
+    ],
+    "stage_definitions": {
+      "Materials": {
+        "lead_months_est": [
+          6,
+          12
+        ],
+        "confirmations": [
+          "XLB/SPY RS rising",
+          "Copper regime > $4.50"
+        ],
+        "risks": [
+          "Copper < $4.00"
+        ]
+      },
+      "Industrials": {
+        "lead_months_est": [
+          12,
+          18
+        ],
+        "confirmations": [
+          "XLI/SPY RS rising",
+          "ISM PMI > 52"
+        ],
+        "risks": [
+          "ISM < 48"
+        ]
+      },
+      "Utilities": {
+        "lead_months_est": [
+          6,
+          12
+        ],
+        "confirmations": [
+          "Fed cuts with unemployment < 4.5%"
+        ],
+        "risks": [
+          "Rates spike > 4.75% 10Y"
+        ]
+      },
+      "Staples": {
+        "lead_months_est": [
+          12,
+          18
+        ],
+        "confirmations": [
+          "XLP/SPY RS up"
+        ],
+        "risks": [
+          "Earnings compression"
+        ]
+      },
+      "Discretionary": {
+        "lead_months_est": [
+          18,
+          24
+        ],
+        "confirmations": [
+          "XLY breakout"
+        ],
+        "risks": [
+          "Credit tightening"
+        ]
+      }
+    }
+  },
+  "portfolio": {
+    "total_value_usd": 20951.95,
+    "weighted_dividend_yield_est": 0.025459,
+    "annual_dividend_income_est_usd": 533.41,
+    "monthly_dividend_income_est_usd": 44.45,
+    "positions": [
+      {
+        "ticker": "CAT",
+        "shares": 10,
+        "entry_price": 645.43,
+        "current_price": 646.89,
+        "current_value": 6468.9,
+        "weight_pct": 30.87,
+        "dividend_yield": 0.0093,
+        "annual_dividend_usd_est": 60.16,
+        "sector": "Industrials"
+      },
+      {
+        "ticker": "SYY",
+        "shares": 50,
+        "entry_price": 77.98,
+        "current_price": 78.8,
+        "current_value": 3940.0,
+        "weight_pct": 18.8,
+        "dividend_yield": 0.0274,
+        "annual_dividend_usd_est": 107.96,
+        "sector": "Staples"
+      },
+      {
+        "ticker": "LOW",
+        "shares": 10,
+        "entry_price": 276.75,
+        "current_price": 277.55,
+        "current_value": 2775.5,
+        "weight_pct": 13.25,
+        "dividend_yield": 0.0178,
+        "annual_dividend_usd_est": 49.4,
+        "sector": "Discretionary"
+      },
+      {
+        "ticker": "O",
+        "shares": 40,
+        "entry_price": 61.27,
+        "current_price": 61.42,
+        "current_value": 2456.8,
+        "weight_pct": 11.73,
+        "dividend_yield": 0.0528,
+        "annual_dividend_usd_est": 129.72,
+        "sector": "Real Estate"
+      },
+      {
+        "ticker": "PPL",
+        "shares": 60,
+        "entry_price": 36.83,
+        "current_price": 36.83,
+        "current_value": 2209.8,
+        "weight_pct": 10.55,
+        "dividend_yield": 0.0315,
+        "annual_dividend_usd_est": 69.61,
+        "sector": "Utilities"
+      },
+      {
+        "ticker": "PLD",
+        "shares": 15,
+        "entry_price": 134.5,
+        "current_price": 133.21,
+        "current_value": 1998.15,
+        "weight_pct": 9.54,
+        "dividend_yield": 0.0303,
+        "annual_dividend_usd_est": 60.54,
+        "sector": "Real Estate"
+      },
+      {
+        "ticker": "DOW",
+        "shares": 40,
+        "entry_price": 27.17,
+        "current_price": 27.57,
+        "current_value": 1102.8,
+        "weight_pct": 5.26,
+        "dividend_yield": 0.0508,
+        "annual_dividend_usd_est": 56.02,
+        "sector": "Materials"
+      }
+    ],
+    "gaps": [
+      {
+        "sector": "Regional Banks",
+        "vehicle": "KRE",
+        "target_weight_pct": [
+          12,
+          15
+        ]
+      },
+      {
+        "sector": "Healthcare",
+        "vehicle": "JNJ or ABBV",
+        "target_weight_pct": [
+          5,
+          8
+        ]
+      },
+      {
+        "sector": "Materials",
+        "target_weight_pct": [
+          10,
+          15
+        ]
+      },
+      {
+        "ticker": "CAT",
+        "constraint": "max_weight_pct",
+        "value": 25
+      }
+    ]
+  },
+  "recommendations": {
+    "tier_1_immediate": [
+      {
+        "ticker": "KRE",
+        "target_weight_pct": [
+          12,
+          15
+        ],
+        "thesis": "Credit/capex transmission spine",
+        "policy_dependency": "HIGH"
+      },
+      {
+        "ticker": "FCX",
+        "target_weight_pct": [
+          3,
+          5
+        ],
+        "thesis": "Copper regime exposure",
+        "policy_dependency": "MED"
+      },
+      {
+        "ticker": "JNJ",
+        "alt_ticker": "ABBV",
+        "target_weight_pct": [
+          5,
+          8
+        ],
+        "thesis": "Defensive ballast",
+        "policy_dependency": "LOW"
+      }
+    ],
+    "tier_2_opportunistic": [
+      {
+        "ticker": "URI",
+        "entry": "RESEARCH_REQUIRED",
+        "thesis": "Equipment rental cycle"
+      },
+      {
+        "ticker": "TSM",
+        "entry": "RESEARCH_REQUIRED",
+        "thesis": "Semi exception"
+      },
+      {
+        "ticker": "NUE",
+        "entry": "RESEARCH_REQUIRED",
+        "thesis": "Steel cycle"
+      }
+    ],
+    "tier_3_speculative": [
+      {
+        "ticker": "MP",
+        "max_weight_pct": 3
+      },
+      {
+        "ticker": "SYM",
+        "max_weight_pct": 3
+      }
+    ],
+    "bear_case_rotation": [
+      "PG",
+      "KO",
+      "JNJ",
+      "ABBV",
+      "MSFT",
+      "GOOGL",
+      "NEM"
+    ]
+  },
+  "ontology": {
+    "spine": [
+      "Policy incentives -> Small business capex -> Equipment demand -> Industrial earnings -> Bank loan growth -> Small-cap outperformance"
+    ],
+    "confirmation_table": [
+      {
+        "component": "Policy working",
+        "confirms_if": "Small-biz loan growth >10% YoY",
+        "denies_if": "<5% YoY",
+        "monitor": "Fed H.8"
+      },
+      {
+        "component": "Rotation intact",
+        "confirms_if": "IWM outperforms SPY by 5%+",
+        "denies_if": "IWM underperforms",
+        "monitor": "IWM/SPY RS"
+      },
+      {
+        "component": "Commodity regime",
+        "confirms_if": "Copper > $4.50; Silver > $30",
+        "denies_if": "Copper < $4.00; Silver < $28",
+        "monitor": "spot prices"
+      },
+      {
+        "component": "Manufacturing revival",
+        "confirms_if": "ISM PMI > 52",
+        "denies_if": "ISM PMI < 48",
+        "monitor": "ISM"
+      },
+      {
+        "component": "Consumer strength",
+        "confirms_if": "Unemployment < 4.5% and wages >3%",
+        "denies_if": "Unemployment > 4.5% or wages <2.5%",
+        "monitor": "BLS/claims"
+      },
+      {
+        "component": "Credit stable",
+        "confirms_if": "Spreads contained",
+        "denies_if": "Spread blowout",
+        "monitor": "HYG/LQD proxy"
+      }
+    ]
+  },
+  "warnings": [
+    {
+      "id": 1,
+      "topic": "Venezuela control claims",
+      "severity": "MED",
+      "assessment": "Uncertain; likely rhetoric pending evidence",
+      "action": "Do not trade without operational confirmation"
+    },
+    {
+      "id": 2,
+      "topic": "Credit card APR cap",
+      "severity": "CRITICAL",
+      "assessment": "Unknown until mechanism verified",
+      "action": "Treat as non-actionable; monitor credit spreads and underwriting"
+    },
+    {
+      "id": 3,
+      "topic": "Minnesota minerals",
+      "severity": "CRITICAL",
+      "assessment": "Removed unless evidence emerges",
+      "action": "Keep out of base case"
+    },
+    {
+      "id": 4,
+      "topic": "Trump family crypto roles/holdings",
+      "severity": "MED",
+      "assessment": "Unknown; non-core",
+      "action": "Ring-fence"
+    },
+    {
+      "id": 5,
+      "topic": "50-year mortgage",
+      "severity": "MED",
+      "assessment": "Speculative",
+      "action": "No positioning"
+    },
+    {
+      "id": 6,
+      "topic": "Gold bond / gold revaluation to fund BTC",
+      "severity": "MED",
+      "assessment": "Highly speculative",
+      "action": "Exclude from base case"
+    }
+  ]
+}

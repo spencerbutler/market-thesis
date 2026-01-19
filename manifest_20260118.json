@@ -1,0 +1,19 @@
+{
+  "latest": {
+    "hr": "v1.6-HR_20260118",
+    "json": "v1.6-JSON_20260118",
+    "agent": "v1.6-AGENT_20260118"
+  },
+  "artifacts": [
+    {
+      "type": "json",
+      "version": "v1.6-JSON_20260118",
+      "filename": "v1.6-JSON_20260118.json"
+    },
+    {
+      "type": "agent_spec",
+      "version": "v1.6-AGENT_20260118",
+      "filename": "v1.6-AGENT_20260118.json"
+    }
+  ]
+}
