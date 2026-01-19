@@ -17,3 +17,6 @@ Thumbs.db
 
 # API keys (if ever added)
 .env
+
+# Virtual environments
+.venv/
