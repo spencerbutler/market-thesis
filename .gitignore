@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.cursor/
+.idea/
+
+# Temp / cache
+*.tmp
+*.log
+
+# Data pulls / local experiments
+/data_raw/
+/scratch/
+
+# API keys (if ever added)
+.env
