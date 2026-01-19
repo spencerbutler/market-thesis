@@ -1,0 +1,237 @@
+{
+  "meta": {
+    "document_type": "thesis",
+    "source_of_truth": "v1.7-HR_20260118",
+    "version": "v1.7-JSON_20260118",
+    "compiled_date_local": "2026-01-18",
+    "timezone": "America/Chicago",
+    "status": "Working Copy",
+    "tags": [
+      "institutional",
+      "human-readable-derived-json"
+    ],
+    "data_as_of_utc": "2026-01-17T01:15:00Z",
+    "data_notes": [
+      "Current portfolio snapshot reflects v1.6.1-DATA_20260118.",
+      "Target allocation reflects v1.7 HR decisions with explicit IWM sleeve to normalize to 100%."
+    ]
+  },
+  "investment_philosophy": {
+    "selection_rule": "Only strongest stocks in strongest sectors; dividend yield + thesis alignment",
+    "horizon_months": [
+      12,
+      24
+    ],
+    "election_horizon_note": "Through November 2026 mid-terms",
+    "core_belief": "Capital rotation from growth/tech into value/cyclicals/industrials",
+    "critical_principle": "Ignore financial media narratives; use market data, price action, economic fundamentals"
+  },
+  "portfolio": {
+    "current_snapshot": {
+      "as_of_utc": "2026-01-17T01:15:00Z",
+      "total_value_usd": 20951.95,
+      "weighted_dividend_yield_est": 0.025459,
+      "annual_dividend_income_est_usd": 533.41,
+      "monthly_dividend_income_est_usd": 44.45,
+      "positions": [
+        {
+          "ticker": "CAT",
+          "shares": 10,
+          "current_price": 646.89,
+          "current_value": 6468.9,
+          "dividend_yield": 0.0093,
+          "annual_dividend_usd_est": 60.16
+        },
+        {
+          "ticker": "SYY",
+          "shares": 50,
+          "current_price": 78.8,
+          "current_value": 3940.0,
+          "dividend_yield": 0.0274,
+          "annual_dividend_usd_est": 107.96
+        },
+        {
+          "ticker": "LOW",
+          "shares": 10,
+          "current_price": 277.55,
+          "current_value": 2775.5,
+          "dividend_yield": 0.0178,
+          "annual_dividend_usd_est": 49.4
+        },
+        {
+          "ticker": "O",
+          "shares": 40,
+          "current_price": 61.42,
+          "current_value": 2456.8,
+          "dividend_yield": 0.0528,
+          "annual_dividend_usd_est": 129.72
+        },
+        {
+          "ticker": "PPL",
+          "shares": 60,
+          "current_price": 36.83,
+          "current_value": 2209.8,
+          "dividend_yield": 0.0315,
+          "annual_dividend_usd_est": 69.61
+        },
+        {
+          "ticker": "PLD",
+          "shares": 15,
+          "current_price": 133.21,
+          "current_value": 1998.15,
+          "dividend_yield": 0.0303,
+          "annual_dividend_usd_est": 60.54
+        },
+        {
+          "ticker": "DOW",
+          "shares": 40,
+          "current_price": 27.57,
+          "current_value": 1102.8,
+          "dividend_yield": 0.0508,
+          "annual_dividend_usd_est": 56.02
+        }
+      ]
+    },
+    "target_allocation": {
+      "version_basis": "v1.7-HR_20260118",
+      "weights": [
+        {
+          "ticker": "CAT",
+          "target_weight_pct": 23,
+          "sector": "Industrials",
+          "role": "Capex / infrastructure"
+        },
+        {
+          "ticker": "DOW",
+          "target_weight_pct": 6,
+          "sector": "Materials",
+          "role": "Income + margin leverage"
+        },
+        {
+          "ticker": "FCX",
+          "target_weight_pct": 5,
+          "sector": "Materials",
+          "role": "Copper regime"
+        },
+        {
+          "ticker": "RF",
+          "target_weight_pct": 6,
+          "sector": "Financials (Regional Banks)",
+          "role": "Small-business lending"
+        },
+        {
+          "ticker": "HBAN",
+          "target_weight_pct": 6,
+          "sector": "Financials (Regional Banks)",
+          "role": "SME + consumer credit"
+        },
+        {
+          "ticker": "LOW",
+          "target_weight_pct": 5,
+          "sector": "Housing / Discretionary",
+          "role": "Housing turnover + repair/remodel"
+        },
+        {
+          "ticker": "O",
+          "target_weight_pct": 10,
+          "sector": "Real Estate",
+          "role": "Income / rate cuts"
+        },
+        {
+          "ticker": "PLD",
+          "target_weight_pct": 8,
+          "sector": "Real Estate",
+          "role": "Logistics demand"
+        },
+        {
+          "ticker": "PPL",
+          "target_weight_pct": 6,
+          "sector": "Utilities",
+          "role": "Defensive income"
+        },
+        {
+          "ticker": "SYY",
+          "target_weight_pct": 5,
+          "sector": "Staples",
+          "role": "Consumption buffer"
+        },
+        {
+          "ticker": "JNJ",
+          "target_weight_pct": 10,
+          "sector": "Healthcare",
+          "role": "Election / recession hedge"
+        },
+        {
+          "ticker": "IWM",
+          "target_weight_pct": 10,
+          "sector": "Small Caps",
+          "role": "Explicit small-cap beta to validate rotation"
+        }
+      ],
+      "rules": [
+        {
+          "rule": "max_single_position_weight_pct",
+          "value": 25,
+          "notes": "CAT trimmed to 23% target"
+        },
+        {
+          "rule": "regional_banks_required",
+          "value": true,
+          "notes": "RF + HBAN total 12%"
+        },
+        {
+          "rule": "materials_target_pct",
+          "value": [
+            10,
+            15
+          ],
+          "notes": "DOW+FCX total 11%"
+        },
+        {
+          "rule": "small_caps_explicit_sleeve_pct",
+          "value": 10,
+          "notes": "IWM sleeve added for direct rotation confirmation"
+        },
+        {
+          "rule": "housing_tactical_pct",
+          "value": 5,
+          "notes": "LOW treated as rate-sensitive housing play"
+        }
+      ]
+    }
+  },
+  "monitoring": {
+    "cat_trim_triggers": [
+      "CAT/SPY relative strength < 0 for 4+ weeks",
+      "ISM PMI < 48",
+      "Material credit spread deterioration"
+    ],
+    "materials_invalidation": "Reduce FCX if Copper < 4.00 AND Silver < 28",
+    "regional_bank_guardrails": [
+      "Small-business loan growth < 5% YoY",
+      "Material deterioration in credit conditions (HYG vs LQD proxy)",
+      "Sustained break below 200D SMA with macro confirmation"
+    ],
+    "housing_low_guardrails": [
+      "Mortgage rates > 7% sustained",
+      "Housing sales < 600k annualized"
+    ]
+  },
+  "warnings": [
+    {
+      "topic": "Credit card APR cap mechanics",
+      "severity": "CRITICAL",
+      "status": "RESEARCH_REQUIRED"
+    },
+    {
+      "topic": "50-year mortgage policy",
+      "severity": "MEDIUM",
+      "status": "SPECULATIVE"
+    },
+    {
+      "topic": "Crypto strategic reserve / gold funding schemes",
+      "severity": "MEDIUM",
+      "status": "SPECULATIVE"
+    }
+  ]
+}

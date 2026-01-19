@@ -1,0 +1,177 @@
+{
+  "meta": {
+    "document_type": "agent_spec",
+    "source_of_truth": "v1.7-HR_20260118",
+    "version": "v1.7-AGENT_20260118",
+    "compiled_date_local": "2026-01-18",
+    "timezone": "America/Chicago",
+    "status": "Working Copy",
+    "tags": [
+      "agent-consumable",
+      "institutional"
+    ],
+    "data_as_of_utc": "2026-01-17T01:15:00Z"
+  },
+  "agent_contract": {
+    "objective": "Maintain and update the 2026 rotation thesis with strict separation of HR truth, derived JSON, and DATA patches.",
+    "guardrails": [
+      "Never invent policy status, prices, yields, or macro data.",
+      "Keep unverified items labeled RESEARCH_REQUIRED or SPECULATIVE.",
+      "Prefer primary sources (BLS, Census, Federal Reserve, issuer IR pages, SEC filings).",
+      "Output diffs/patches; do not overwrite canonical HR."
+    ],
+    "allowed_writes": [
+      "vX.Y.Z-DATA_YYYYMMDD snapshots",
+      "proposed diffs to vX.Y-HR_YYYYMMDD (never direct edits)"
+    ]
+  },
+  "data_requirements": {
+    "portfolio_targets": {
+      "weights": [
+        {
+          "ticker": "CAT",
+          "target_weight_pct": 23,
+          "sector": "Industrials",
+          "role": "Capex / infrastructure"
+        },
+        {
+          "ticker": "DOW",
+          "target_weight_pct": 6,
+          "sector": "Materials",
+          "role": "Income + margin leverage"
+        },
+        {
+          "ticker": "FCX",
+          "target_weight_pct": 5,
+          "sector": "Materials",
+          "role": "Copper regime"
+        },
+        {
+          "ticker": "RF",
+          "target_weight_pct": 6,
+          "sector": "Financials (Regional Banks)",
+          "role": "Small-business lending"
+        },
+        {
+          "ticker": "HBAN",
+          "target_weight_pct": 6,
+          "sector": "Financials (Regional Banks)",
+          "role": "SME + consumer credit"
+        },
+        {
+          "ticker": "LOW",
+          "target_weight_pct": 5,
+          "sector": "Housing / Discretionary",
+          "role": "Housing turnover + repair/remodel"
+        },
+        {
+          "ticker": "O",
+          "target_weight_pct": 10,
+          "sector": "Real Estate",
+          "role": "Income / rate cuts"
+        },
+        {
+          "ticker": "PLD",
+          "target_weight_pct": 8,
+          "sector": "Real Estate",
+          "role": "Logistics demand"
+        },
+        {
+          "ticker": "PPL",
+          "target_weight_pct": 6,
+          "sector": "Utilities",
+          "role": "Defensive income"
+        },
+        {
+          "ticker": "SYY",
+          "target_weight_pct": 5,
+          "sector": "Staples",
+          "role": "Consumption buffer"
+        },
+        {
+          "ticker": "JNJ",
+          "target_weight_pct": 10,
+          "sector": "Healthcare",
+          "role": "Election / recession hedge"
+        },
+        {
+          "ticker": "IWM",
+          "target_weight_pct": 10,
+          "sector": "Small Caps",
+          "role": "Explicit small-cap beta to validate rotation"
+        }
+      ]
+    },
+    "market_prices": {
+      "tickers": [
+        "CAT",
+        "DOW",
+        "FCX",
+        "RF",
+        "HBAN",
+        "LOW",
+        "O",
+        "PLD",
+        "PPL",
+        "SYY",
+        "JNJ",
+        "IWM",
+        "SPY",
+        "XLI",
+        "XLB",
+        "XLU",
+        "XLP",
+        "XLY",
+        "HYG",
+        "LQD",
+        "^TNX"
+      ]
+    },
+    "macro": {
+      "labor": [
+        "unemployment_rate",
+        "wage_growth_yoy",
+        "initial_claims_4wk_avg"
+      ],
+      "manufacturing": [
+        "ISM_PMI"
+      ],
+      "inflation": [
+        "PPI_headline_yoy",
+        "PPI_metals_yoy",
+        "PPI_energy_yoy",
+        "PPI_construction_yoy"
+      ],
+      "housing": [
+        "existing_home_sales",
+        "new_home_sales",
+        "months_supply",
+        "mortgage_rate_30y"
+      ],
+      "credit": [
+        "loan_growth_small_business",
+        "credit_conditions_proxies"
+      ]
+    }
+  },
+  "metrics_and_triggers": {
+    "actions": [
+      {
+        "if": "Copper < 4.00 AND Silver < 28",
+        "then": "Reduce FCX exposure"
+      },
+      {
+        "if": "Small-biz loan growth < 5% YoY",
+        "then": "Reduce RF/HBAN exposure"
+      },
+      {
+        "if": "Mortgage rates > 7% sustained",
+        "then": "Reduce LOW exposure"
+      },
+      {
+        "if": "ISM PMI < 48",
+        "then": "Trim CAT / cyclicals and increase defensives"
+      }
+    ]
+  }
+}
