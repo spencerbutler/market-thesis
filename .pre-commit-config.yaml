@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-thesis-artifacts
+        name: Validate thesis JSON/AGENT against schemas
+        entry: python3 scripts/regen.py
+        language: system
+        pass_filenames: false
+        args: ["v1.7-HR_20260118.md", "--validate-only"]
