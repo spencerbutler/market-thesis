@@ -1,6 +1,14 @@
 repos:
   - repo: local
     hooks:
+      - id: validate-manifest-latest
+        name: Validate manifest_latest.json integrity
+        entry: python3 scripts/validate_manifest_latest.py
+        language: system
+        pass_filenames: false
+
+  - repo: local
+    hooks:
       - id: validate-thesis-artifacts
         name: Validate thesis JSON/AGENT against schemas (latest HR)
         entry: python3 scripts/validate_latest.py
@@ -10,7 +18,7 @@ repos:
   - repo: local
     hooks:
       - id: dashboard-spec-integrity
-        name: dashboard spec integrity
+        name: Dashboard spec integrity
         entry: python3 scripts/validate_spec_integrity.py
         language: system
         pass_filenames: false
