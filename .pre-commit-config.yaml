@@ -6,3 +6,11 @@ repos:
         entry: python3 scripts/validate_latest.py
         language: system
         pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: dashboard-spec-integrity
+        name: dashboard spec integrity
+        entry: python3 scripts/validate_spec_integrity.py
+        language: system
+        pass_filenames: false
