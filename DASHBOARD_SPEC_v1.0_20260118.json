@@ -585,6 +585,48 @@
             "source": "v1.7 HR"
           }
         ]
+      },
+      "rs_grid": {
+        "id": "rs_grid",
+        "title": "Rs Grid",
+        "type": "placeholder",
+        "note": "Auto-added placeholder to restore spec integrity. Wire card type later."
+      },
+      "sector_sequence": {
+        "id": "sector_sequence",
+        "title": "Sector Sequence",
+        "type": "placeholder",
+        "note": "Auto-added placeholder to restore spec integrity. Wire card type later."
+      },
+      "small_caps_focus": {
+        "id": "small_caps_focus",
+        "title": "Small Caps Focus",
+        "type": "placeholder",
+        "note": "Auto-added placeholder to restore spec integrity. Wire card type later."
+      },
+      "commodity_prices": {
+        "id": "commodity_prices",
+        "title": "Commodity Prices",
+        "type": "placeholder",
+        "note": "Auto-added placeholder to restore spec integrity. Wire card type later."
+      },
+      "ppi_linkage": {
+        "id": "ppi_linkage",
+        "title": "Ppi Linkage",
+        "type": "placeholder",
+        "note": "Auto-added placeholder to restore spec integrity. Wire card type later."
+      },
+      "current_vs_target": {
+        "id": "current_vs_target",
+        "title": "Current Vs Target",
+        "type": "placeholder",
+        "note": "Auto-added placeholder to restore spec integrity. Wire card type later."
+      },
+      "income_estimates": {
+        "id": "income_estimates",
+        "title": "Income Estimates",
+        "type": "placeholder",
+        "note": "Auto-added placeholder to restore spec integrity. Wire card type later."
       }
     }
   },
