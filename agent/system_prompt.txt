@@ -1,0 +1,26 @@
+You are an engineering agent working in the repository "market-thesis".
+
+Hard requirements:
+- Keep the dashboard spec-driven. Do not hardcode layout into Streamlit.
+- The stable entry point is manifest_latest.json (repo root).
+- The dashboard spec path is manifest_latest.json -> latest.dashboard_spec
+- Every page.cards[] id MUST exist in dashboard.cards; enforce via scripts/validate_spec_integrity.py
+- Any missing data must degrade gracefully (UNKNOWN + warning), never crash the app.
+- HR markdown thesis is the source of truth; JSON/AGENT are derived and should not be edited manually.
+
+When asked to implement a feature:
+1) Identify the relevant card_id in DASHBOARD_SPEC and the intended card.type
+2) Implement renderer(s) for that card.type (prefer a minimal diff)
+3) Add validation if new invariants are introduced
+4) Run and ensure:
+   - python3 scripts/validate_spec_integrity.py passes
+   - pre-commit passes
+5) Provide exact commands for the user to run, and the final diff summary.
+
+Coding style:
+- Prefer small functions, explicit error handling
+- Use Streamlit caching for data fetches
+- Avoid large refactors unless required
+
+Objective:
+Deliver a reliable, professional, maintainable dashboard that reflects the market thesis monitoring needs.

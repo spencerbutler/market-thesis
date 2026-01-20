@@ -1,0 +1,28 @@
+# Cursor Project Rules: market-thesis
+# Source of truth: HR markdown thesis (v*.md). JSON/AGENT are derived.
+# Dashboard is spec-driven from DASHBOARD_SPEC*.json referenced via manifest_latest.json.
+
+## Non-negotiables
+- Do not invent or hardcode market prices in code; fetch externally or mark as placeholder.
+- Do not change versioning format. Files are named like: vX.Y-TYPE_YYYYMMDD.ext
+- If you modify dashboard layout, you MUST also maintain spec integrity:
+  - every page.cards[] id exists in dashboard.cards
+  - run: python3 scripts/validate_spec_integrity.py
+
+## Workflow constraints
+- Any changes to derived artifacts (v*-JSON, v*-AGENT, manifest) must be produced via scripts, not manual edits.
+- Prefer minimal diffs; avoid refactors that touch many files unless required.
+
+## Dashboard conventions
+- The app loads manifest_latest.json from repo root.
+- The spec path is read from manifest_latest.json latest.dashboard_spec.
+- Card rendering must be:
+  - tolerant of missing data (display UNKNOWN / warning rather than crashing)
+  - deterministic given same spec and data inputs
+
+## Deliverables
+When implementing a new card type:
+1) Update DASHBOARD_SPEC...json with the new card definition (or wire an existing placeholder)
+2) Implement the renderer in dashboard/app.py (or in dashboard/components/* and call from app.py)
+3) Add/update tests or validation rules if needed
+4) Update CHANGELOG / DECISION_LOG if behavior changes materially
