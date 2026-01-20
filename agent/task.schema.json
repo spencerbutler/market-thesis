@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Market Thesis Repo Task",
+  "type": "object",
+  "required": ["task_type", "objective", "acceptance"],
+  "properties": {
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "wire_card",
+        "add_card",
+        "add_renderer",
+        "regen_thesis",
+        "fix_spec_integrity",
+        "bugfix"
+      ]
+    },
+    "objective": { "type": "string" },
+    "inputs": { "type": "object", "additionalProperties": true },
+    "acceptance": {
+      "type": "object",
+      "required": ["commands", "must_pass"],
+      "properties": {
+        "commands": { "type": "array", "items": { "type": "string" } },
+        "must_pass": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "outputs": { "type": "array", "items": { "type": "string" } }
+  }
+}
