@@ -1,0 +1,236 @@
+#!/bin/sh
+# mt-fetch — tiny MT fetch wrapper (POSIX)
+# stages: new-run (mkdir layout) / pack-evidence (hash + manifest/provenance)
+
+say() { printf '%s\n' "$*"; }
+
+usage() {
+  cat <<'USAGE'
+mt-fetch — MT fetch helper (POSIX)
+
+usage:
+  mt-fetch help
+  mt-fetch new-run --source <id> [--run-id <id>] [--mode manual|http|api] [--tag <t>]... [--inuid <id>] [--repo <path>]
+  mt-fetch pack-evidence --run-id <id> [--source <id>] [--repo <path>]
+
+notes:
+  - works from any cwd
+  - default repo root is inferred from this script location (…/tooling/bin/mt-fetch → repo root)
+  - prefers mt_fetcher python modules; falls back to stdlib-only python hashing if import fails
+USAGE
+}
+
+# infer repo root from script path (POSIX)
+self="$0"
+case "$self" in
+  /*) self_path="$self" ;;
+  *) self_path="$(pwd)/$self" ;;
+esac
+
+# repo root = ../../ from tooling/bin
+script_dir="$(CDPATH= cd -- "$(dirname -- "$self_path")" 2>/dev/null && pwd)"
+repo_default="$(CDPATH= cd -- "$script_dir/../.." 2>/dev/null && pwd)"
+
+repo="$repo_default"
+
+cmd="${1:-help}"
+shift 2>/dev/null || true
+
+# common args
+run_id=""
+source_id=""
+mode="manual"
+inuid=""
+tags=""
+
+# parse args (simple)
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --repo) repo="$2"; shift 2 ;;
+    --run-id) run_id="$2"; shift 2 ;;
+    --source) source_id="$2"; shift 2 ;;
+    --mode) mode="$2"; shift 2 ;;
+    --inuid) inuid="$2"; shift 2 ;;
+    --tag) tags="${tags}${tags:+,}$2"; shift 2 ;;
+    -h|--help) cmd="help"; shift ;;
+    *) say "🔴 🟦 b # ERROR: unknown arg: $1"; say ""; usage; return 0 2>/dev/null || true; exit 0 ;;
+  esac
+done
+
+# precheck repo
+if [ ! -d "$repo/.git" ]; then
+  say "🔴 🟦 b # ERROR: repo missing .git: $repo"
+  say "🔹 lb # NOTE: pass --repo <path> or run from a clone"
+  exit 0
+fi
+
+pyroot="$repo/library/py"
+
+# directory roots
+var_root="$repo/var/mt"
+raw_base="$var_root/fetch/raw"
+evid_base="$var_root/evidence"
+norm_base="$var_root/normalize"
+sum_base="$var_root/summaries"
+
+mkdir -p "$raw_base" "$evid_base" "$norm_base" "$sum_base" >/dev/null 2>&1 || true
+
+case "$cmd" in
+  help|"") usage; exit 0 ;;
+  new-run)
+    [ -n "$source_id" ] || { say "🔴 🟦 b # ERROR: --source required"; usage; exit 0; }
+    [ -n "$run_id" ] || run_id="run-$(date +%Y%m%d-%H%M%S)"
+
+    raw_dir="$raw_base/$run_id"
+    evid_dir="$evid_base/$run_id"
+    norm_dir="$norm_base/$run_id"
+    sum_dir="$sum_base/$run_id"
+
+    say "🟦 b # NEW-RUN: run_id=$run_id source=$source_id mode=$mode"
+    mkdir -p "$raw_dir" "$evid_dir" "$norm_dir" "$sum_dir" >/dev/null 2>&1 || true
+
+    # prefer mt_fetcher.pipeline if importable
+    if command -v python3 >/dev/null 2>&1; then
+      if PYTHONPATH="$pyroot${PYTHONPATH:+:$PYTHONPATH}" python3 - <<'PY' >/dev/null 2>&1
+from mt_fetcher.pipeline import RunConfig, run
+PY
+      then
+        env RUN_ID="$run_id" SOURCE_ID="$source_id" MT_REPO="$repo" MODE="$mode" INUID="$inuid" TAGS="$tags" \
+          PYTHONPATH="$pyroot${PYTHONPATH:+:$PYTHONPATH}" \
+          python3 - <<'PY'
+from pathlib import Path
+from mt_fetcher.pipeline import RunConfig, run
+import os
+
+run_id=os.environ["RUN_ID"]
+source_id=os.environ["SOURCE_ID"]
+mode=os.environ.get("MODE","manual")
+inuid=os.environ.get("INUID") or None
+tags=os.environ.get("TAGS","")
+tags_list=[t for t in tags.split(",") if t] if tags else []
+
+cfg=RunConfig(run_id=run_id, source_id=source_id, out_root=Path(os.environ["MT_REPO"]), mode=mode, inuid=inuid, tags=tags_list)
+res=run(cfg)
+print("🟢 🟦 b # OK: pipeline.run")
+print("run_id:", res.run_id)
+print("source_id:", res.source_id)
+print("raw_dir:", res.raw_dir)
+print("evidence_dir:", res.evidence_dir)
+print("normalize_dir:", res.normalize_dir)
+print("summary_dir:", res.summary_dir)
+PY
+      else
+        say "🟡 🟦 b # NOTE: mt_fetcher import failed; using POSIX mkdir fallback"
+        say "run_id: $run_id"
+        say "source_id: $source_id"
+        say "raw_dir: $raw_dir"
+        say "evidence_dir: $evid_dir"
+        say "normalize_dir: $norm_dir"
+        say "summary_dir: $sum_dir"
+      fi
+    else
+      say "🟡 🟦 b # NOTE: python3 not found; using POSIX mkdir fallback"
+      say "run_id: $run_id"
+      say "source_id: $source_id"
+      say "raw_dir: $raw_dir"
+      say "evidence_dir: $evid_dir"
+      say "normalize_dir: $norm_dir"
+      say "summary_dir: $sum_dir"
+    fi
+
+    say "🟦 b # DROP FILES HERE:"
+    say "$raw_dir"
+    exit 0
+    ;;
+  pack-evidence)
+    [ -n "$run_id" ] || { say "🔴 🟦 b # ERROR: --run-id required"; usage; exit 0; }
+    [ -n "$source_id" ] || source_id="(unset)"
+
+    raw_dir="$raw_base/$run_id"
+    evid_dir="$evid_base/$run_id"
+
+    if [ ! -d "$raw_dir" ]; then
+      say "🔴 🟦 b # ERROR: raw_dir missing: $raw_dir"
+      exit 0
+    fi
+    mkdir -p "$evid_dir" >/dev/null 2>&1 || true
+
+    say "🟦 b # PACK-EVIDENCE: run_id=$run_id source=$source_id"
+    say "🟦 b # raw_dir=$raw_dir"
+    say "🟦 b # evid_dir=$evid_dir"
+
+    # prefer mt_fetcher.evidence if importable; else fallback to stdlib-only python hashing
+    if command -v python3 >/dev/null 2>&1; then
+      if PYTHONPATH="$pyroot${PYTHONPATH:+:$PYTHONPATH}" python3 - <<'PY' >/dev/null 2>&1
+from mt_fetcher.evidence import pack
+PY
+      then
+        env RUN_ID="$run_id" SOURCE_ID="$source_id" RAW_DIR="$raw_dir" EVID_DIR="$evid_dir" \
+          PYTHONPATH="$pyroot${PYTHONPATH:+:$PYTHONPATH}" \
+          python3 - <<'PY'
+from pathlib import Path
+from mt_fetcher.evidence import pack
+import os
+
+raw_dir=Path(os.environ["RAW_DIR"])
+evid_dir=Path(os.environ["EVID_DIR"])
+run_id=os.environ["RUN_ID"]
+source_id=os.environ["SOURCE_ID"]
+
+files=[p for p in raw_dir.rglob("*") if p.is_file()]
+meta={"run_id": run_id, "source_id": source_id, "mode":"manual", "note":"mt-fetch pack-evidence"}
+
+ep=pack(run_root=evid_dir, files=files, meta=meta)
+print("🟢 🟦 b # OK: mt_fetcher.evidence.pack")
+print("manifest:", ep.manifest_path)
+print("provenance:", ep.provenance_path)
+print("files:", len(ep.files))
+PY
+      else
+        env RUN_ID="$run_id" SOURCE_ID="$source_id" RAW_DIR="$raw_dir" EVID_DIR="$evid_dir" \
+          python3 - <<'PY'
+import hashlib, json, os
+from pathlib import Path
+
+run_id=os.environ["RUN_ID"]
+source_id=os.environ["SOURCE_ID"]
+raw_dir=Path(os.environ["RAW_DIR"])
+evid_dir=Path(os.environ["EVID_DIR"])
+evid_dir.mkdir(parents=True, exist_ok=True)
+
+def sha256_file(p: Path) -> str:
+    h=hashlib.sha256()
+    with p.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024*1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+files=[]
+for p in raw_dir.rglob("*"):
+    if p.is_file():
+        files.append({"path": str(p), "sha256": sha256_file(p), "size_bytes": p.stat().st_size})
+
+manifest_path=evid_dir/"manifest.json"
+prov_path=evid_dir/"provenance.json"
+
+manifest_path.write_text(json.dumps({"files": files}, indent=2, sort_keys=True), encoding="utf-8")
+prov_path.write_text(json.dumps({"meta": {"run_id": run_id, "source_id": source_id, "mode":"manual", "note":"fallback pack-evidence (stdlib)"}}, indent=2, sort_keys=True), encoding="utf-8")
+
+print("🟡 🟦 b # NOTE: mt_fetcher import failed; used stdlib fallback")
+print("manifest:", manifest_path)
+print("provenance:", prov_path)
+print("files:", len(files))
+PY
+      fi
+    else
+      say "🔴 🟦 b # ERROR: python3 required for hashing fallback"
+    fi
+    exit 0
+    ;;
+  *)
+    say "🔴 🟦 b # ERROR: unknown command: $cmd"
+    say ""
+    usage
+    exit 0
+    ;;
+esac
