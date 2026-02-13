@@ -1,0 +1,35 @@
+apiVersion: hee/v1
+kind: Contract
+metadata:
+  name: mt.fetcher.privacy.contract.v1
+  description: "Privacy/redaction invariants for mt-fetch normalize outputs (public-safe defaults)."
+  labels:
+    domain: mt
+    scope: fetcher
+    topic: privacy
+    artifact: contract
+  annotations:
+    inuid: "698e3412-47e8-832f-ad2d-25fb3c63f0af"
+spec:
+  intent:
+    - "Default outputs are safe for public repos: hash-first, no raw paths, no PII by accident."
+    - "Any relaxation (filenames/titles) requires explicit opt-in + reason recorded in run context."
+  invariants:
+    - id: normalize.no-raw-paths
+      must:
+        - "normalize output MUST NOT include raw filesystem paths"
+        - "normalize output MUST reference artifacts by sha256 (stable id)"
+    - id: normalize.no-filenames-by-default
+      must:
+        - "normalize title defaults to artifact:<sha12>"
+        - "filenames are only allowed when explicitly authorized per-run"
+    - id: run-context.privacy-gate
+      must:
+        - "If --include-names is requested, context.json MUST contain privacy.allow_names=true"
+        - "If privacy.allow_names=true, privacy.allow_names_reason MUST be non-empty"
+      notes:
+        - "If gate is not satisfied, tool MUST degrade safely (ignore --include-names) and continue."
+    - id: uiboss.status-surface
+      must:
+        - "normalize MUST write var/mt/latest/mt-fetch.normalize.status.v1.json"
+        - "status MUST NOT include raw paths or sensitive payload (hashes + counts + timestamps only)"
