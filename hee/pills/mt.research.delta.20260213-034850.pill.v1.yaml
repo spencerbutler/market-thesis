@@ -1,0 +1,27 @@
+apiVersion: hee/v1
+kind: Pill
+metadata:
+  name: mt.research.delta.20260213-034850
+  description: "Delta: shift lead discovery + local business research into MT (public trail), including closures/startups, failed MN weed startups, food distros, and price discovery tooling under evidence-first normalization."
+  labels:
+    domain: mt
+    scope: research
+    topic: local-leads
+    artifact: delta
+    ui: battlecenter
+  annotations:
+    inurlid: "698e3412-47e8-832f-ad2d-25fb3c63f0af"
+    inuid: "698e3412-47e8-832f-ad2d-25fb3c63f0af"
+    ts_utc: "2026-02-13T09:48:50Z"
+spec:
+  adds:
+    - "Research lanes: local MPLS restaurant closures + new startups; failed MN weed startups; food distributors (routes to corner stores); legacy businesses w/ margin leaks due to no-computers."
+    - "Product idea: UPC/photo-to-price discovery across preferred retailers → CPI-adjacent signal + B2B wedge."
+    - "Ingest: gut mt-news (rss sucker) into MT proper; normalize sources beyond RSS; evidence-first pipeline."
+    - "Tooling: tiny stools only; consistent naming; split repo if MT grows too fast."
+  guardrails:
+    - "No targeted private-residence lookups in-chat; use official sources + evidence capture workflow when needed."
+    - "Evidence is everything; verified evidence is gold; repeatable verified evidence is the model."
+  next:
+    - "Draft MT fetcher plan: fetch→evidence→normalize→summarize for public records + retail price snapshots."
+    - "Define source registry format + freshness scoring hooks (mtime + git-touch age)."
