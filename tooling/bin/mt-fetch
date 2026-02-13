@@ -1,10 +1,9 @@
 #!/bin/sh
 # mt-fetch — tiny MT fetch helper (POSIX, source-safe)
 # commands: new-run / pack-evidence / normalize
+# privacy: hash-first; no raw paths; filenames only with explicit context opt-in
 
 say() { printf '%s\n' "$*"; }
-
-# If sourced, "return" works; if executed, it doesn't.
 mt_exit() { code="${1:-0}"; return "$code" 2>/dev/null || exit "$code"; }
 
 usage() {
@@ -19,9 +18,10 @@ usage:
 
 notes:
   - works from any cwd
-  - default repo root inferred from this script location (…/tooling/bin/mt-fetch → repo root)
-  - prefers mt_fetcher python modules; falls back to stdlib-only python when import fails
-  - does NOT run apt; missing tools may print OS install suggestions (harmless)
+  - default repo inferred from script location (…/tooling/bin/mt-fetch → repo root)
+  - source-safe: never hard-exits your shell when sourced
+  - privacy gate: --include-names only works if context.json allows it + has a reason
+  - normalize writes var/mt/latest/mt-fetch.normalize.status.v1.json for UIBoss
 USAGE
 }
 
@@ -72,8 +72,9 @@ raw_base="$var_root/fetch/raw"
 evid_base="$var_root/evidence"
 norm_base="$var_root/normalize"
 sum_base="$var_root/summaries"
+latest_dir="$var_root/latest"
 
-mkdir -p "$raw_base" "$evid_base" "$norm_base" "$sum_base" >/dev/null 2>&1 || true
+mkdir -p "$raw_base" "$evid_base" "$norm_base" "$sum_base" "$latest_dir" >/dev/null 2>&1 || true
 
 case "$cmd" in
   help|"")
@@ -117,13 +118,16 @@ print(json.dumps({
   "created_utc": now,
   "retrieved_utc": now,
   "tags": tags_list,
-  "inuid": inuid
+  "inuid": inuid,
+  "privacy": {
+    "allow_names": False,
+    "allow_names_reason": ""
+  }
 }, indent=2, sort_keys=True))
 PY
       else
-        # stdlib fallback unavailable; write minimal JSON-ish (still valid JSON)
         cat >"$ctx_json" <<EOF
-{"run_id":"$run_id","source_id":"$source_id","created_utc":"","retrieved_utc":"","tags":[],"inuid":"$inuid"}
+{"run_id":"$run_id","source_id":"$source_id","created_utc":"","retrieved_utc":"","tags":[],"inuid":"$inuid","privacy":{"allow_names":false,"allow_names_reason":""}}
 EOF
       fi
     fi
@@ -156,7 +160,6 @@ EOF
       mt_exit 0
     fi
 
-    # prefer mt_fetcher.evidence
     if PYTHONPATH="$pyroot${PYTHONPATH:+:$PYTHONPATH}" python3 - <<'PY' >/dev/null 2>&1
 from mt_fetcher.evidence import pack
 PY
@@ -179,33 +182,7 @@ print("provenance:", ep.provenance_path)
 print("files:", len(ep.files))
 PY
     else
-      # stdlib fallback
-      env RUN_ID="$run_id" SOURCE_ID="$source_id" RAW_DIR="$raw_dir" EVID_DIR="$evid_dir" \
-        python3 - <<'PY'
-import hashlib, json, os
-from pathlib import Path
-run_id=os.environ["RUN_ID"]
-source_id=os.environ["SOURCE_ID"]
-raw_dir=Path(os.environ["RAW_DIR"])
-evid_dir=Path(os.environ["EVID_DIR"])
-evid_dir.mkdir(parents=True, exist_ok=True)
-def sha256_file(p: Path) -> str:
-  h=hashlib.sha256()
-  with p.open("rb") as f:
-    for chunk in iter(lambda: f.read(1024*1024), b""):
-      h.update(chunk)
-  return h.hexdigest()
-files=[]
-for p in raw_dir.rglob("*"):
-  if p.is_file():
-    files.append({"path": str(p), "sha256": sha256_file(p), "size_bytes": p.stat().st_size})
-(manifest_path:=evid_dir/"manifest.json").write_text(json.dumps({"files": files}, indent=2, sort_keys=True), encoding="utf-8")
-(prov_path:=evid_dir/"provenance.json").write_text(json.dumps({"meta":{"run_id":run_id,"source_id":source_id,"mode":"manual","note":"fallback pack-evidence (stdlib)"}}, indent=2, sort_keys=True), encoding="utf-8")
-print("🟡 🟦 b # NOTE: used stdlib fallback")
-print("manifest:", manifest_path)
-print("provenance:", prov_path)
-print("files:", len(files))
-PY
+      say "🟡 🟦 b # NOTE: mt_fetcher.evidence missing; keep using your existing pack path"
     fi
     mt_exit 0
     ;;
@@ -216,8 +193,10 @@ PY
     raw_dir="$raw_base/$run_id"
     evid_dir="$evid_base/$run_id"
     norm_dir="$norm_base/$run_id"
-    items_out="$norm_dir/items.jsonl"
     manifest="$evid_dir/manifest.json"
+    items_out="$norm_dir/items.jsonl"
+    meta_out="$norm_dir/normalize.meta.json"
+    status_json="$latest_dir/mt-fetch.normalize.status.v1.json"
 
     if [ ! -f "$manifest" ]; then
       say "🔴 🟦 b # ERROR: missing manifest: $manifest"
@@ -226,6 +205,47 @@ PY
     fi
 
     mkdir -p "$norm_dir" >/dev/null 2>&1 || true
+
+    # privacy gate for include_names
+    if [ "$include_names" = "1" ]; then
+      allow="0"
+      reason_ok="0"
+      ctx="$raw_dir/context.json"
+      if command -v python3 >/dev/null 2>&1 && [ -f "$ctx" ]; then
+        allow="$(python3 - <<PY 2>/dev/null
+import json
+from pathlib import Path
+p=Path("$ctx")
+try:
+  d=json.loads(p.read_text(encoding="utf-8"))
+  priv=d.get("privacy") or {}
+  print("1" if priv.get("allow_names") is True else "0")
+except Exception:
+  print("0")
+PY
+)"
+        reason_ok="$(python3 - <<PY 2>/dev/null
+import json
+from pathlib import Path
+p=Path("$ctx")
+try:
+  d=json.loads(p.read_text(encoding="utf-8"))
+  priv=d.get("privacy") or {}
+  r=str(priv.get("allow_names_reason") or "").strip()
+  print("1" if len(r) > 0 else "0")
+except Exception:
+  print("0")
+PY
+)"
+      fi
+
+      if [ "$allow" != "1" ] || [ "$reason_ok" != "1" ]; then
+        say "🔴 🟦 b # ERROR: --include-names denied by privacy contract"
+        say "🔹 lb # NOTE: set context.json privacy.allow_names=true and privacy.allow_names_reason non-empty (then rerun)"
+        say "🟡 🟦 b # SAFE-DEGRADE: proceeding WITHOUT names"
+        include_names=""
+      fi
+    fi
 
     say "🟦 b # NORMALIZE: run_id=$run_id source=$source_id"
     say "🟦 b # out=$items_out"
@@ -258,62 +278,60 @@ print("items:", res.items_path)
 print("count:", res.count)
 PY
     else
-      # stdlib fallback
-      env RUN_ID="$run_id" SOURCE_ID="$source_id" RAW_DIR="$raw_dir" MANIFEST="$manifest" NORM_DIR="$norm_dir" INCLUDE_NAMES="$include_names" \
-        python3 - <<'PY'
-import json, mimetypes, os
-from pathlib import Path
-run_id=os.environ["RUN_ID"]
-source_id=os.environ["SOURCE_ID"]
-raw_dir=Path(os.environ["RAW_DIR"])
-manifest=Path(os.environ["MANIFEST"])
-norm_dir=Path(os.environ["NORM_DIR"])
-include_names=(os.environ.get("INCLUDE_NAMES")=="1")
-ctx={}
-ctx_path=raw_dir/"context.json"
-if ctx_path.is_file():
-  try: ctx=json.loads(ctx_path.read_text(encoding="utf-8"))
-  except Exception: ctx={}
-tags = ctx.get("tags") if isinstance(ctx.get("tags"), list) else []
-retrieved = ctx.get("retrieved_utc") or ctx.get("created_utc") or ""
-m=json.loads(manifest.read_text(encoding="utf-8"))
-files=m.get("files", [])
-out=norm_dir/"items.jsonl"
-count=0
-with out.open("w", encoding="utf-8") as f:
-  for ent in files:
-    sha=ent.get("sha256","")
-    size=ent.get("size_bytes",0)
-    raw_path=ent.get("path","")
-    ctype=mimetypes.guess_type(raw_path)[0] or "application/octet-stream"
-    title=f"artifact:{sha[:12]}" if sha else "artifact:unknown"
-    if include_names and raw_path:
-      title=Path(raw_path).name
-    f.write(json.dumps({
-      "schema":"mt.normalize.item.v1",
-      "run_id":run_id,
-      "source_id":source_id,
-      "retrieved_utc":retrieved,
-      "title":title,
-      "url":ctx.get("url",""),
-      "content_type":ctype,
-      "raw_evidence_sha256":sha,
-      "size_bytes":size,
-      "tags":tags
-    }, sort_keys=True) + "\n")
-    count+=1
-(norm_dir/"normalize.meta.json").write_text(json.dumps({"meta":{"run_id":run_id,"source_id":source_id,"retrieved_utc":retrieved,"tags":tags},"count":count}, indent=2, sort_keys=True), encoding="utf-8")
-print("🟡 🟦 b # NOTE: used stdlib fallback normalize")
-print("items:", out)
-print("count:", count)
-PY
+      say "🔴 🟦 b # ERROR: mt_fetcher.normalize not importable (PYTHONPATH issue)"
+      mt_exit 0
     fi
 
+    # write UIBoss status JSON (no raw paths)
+    python3 - <<PY >/dev/null 2>&1
+import json, subprocess, datetime
+from pathlib import Path
+
+repo=Path("$repo")
+norm_dir=Path("$norm_dir")
+meta_path=norm_dir/"normalize.meta.json"
+
+count=0
+if meta_path.is_file():
+  try:
+    count=int(json.loads(meta_path.read_text(encoding="utf-8")).get("count",0))
+  except Exception:
+    count=0
+
+def sh(cmd):
+  try:
+    return subprocess.check_output(cmd, cwd=str(repo), text=True).strip()
+  except Exception:
+    return ""
+
+sha=sh(["git","rev-parse","HEAD"])
+branch=sh(["git","rev-parse","--abbrev-ref","HEAD"])
+now=datetime.datetime.utcnow().replace(microsecond=0).isoformat()+"Z"
+
+status={
+  "schema":"mt.fetch.normalize.status.v1",
+  "updated_utc": now,
+  "repo": {"path": str(repo), "git_sha": sha, "git_branch": branch},
+  "run": {"run_id": "$run_id", "source_id": "$source_id"},
+  "counts": {"items": count},
+  "outputs": {
+    "items_jsonl": "var/mt/normalize/$run_id/items.jsonl",
+    "meta_json": "var/mt/normalize/$run_id/normalize.meta.json"
+  }
+}
+
+out=Path("$status_json")
+out.parent.mkdir(parents=True, exist_ok=True)
+out.write_text(json.dumps(status, indent=2, sort_keys=True), encoding="utf-8")
+PY
+
     if command -v jq >/dev/null 2>&1; then
+      say "🟦 b # jq: latest status"
+      jq -S . "$status_json" 2>/dev/null || true
       say "🟦 b # jq: preview (first 10 items)"
       jq -S -s '.[0:10]' "$items_out" 2>/dev/null || true
     else
-      say "🟡 🟦 b # NOTE: jq not found; skipping preview"
+      say "🟡 🟦 b # NOTE: jq not found; skipping pretty output"
     fi
 
     mt_exit 0
