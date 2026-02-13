@@ -1,0 +1,71 @@
+apiVersion: hee/v1
+kind: Pill
+metadata:
+  name: mt.fetcher.delta.20260213-035631
+  description: "Delta: introduce MT fetcher pipeline v1 (fetch→evidence→normalize→summarize) + tiny python module interfaces (pipeline/evidence). No addresses embedded; evidence-first."
+  labels:
+    domain: mt
+    scope: research
+    topic: fetcher
+    artifact: delta
+    ui: battlecenter
+  annotations:
+    inurlid: "698e3412-47e8-832f-ad2d-25fb3c63f0af"
+    inuid: "698e3412-47e8-832f-ad2d-25fb3c63f0af"
+    ts_utc: "2026-02-13T09:56:31Z"
+spec:
+  adds:
+    - "MT fetcher pipeline v1: fetch → evidence → normalize → summarize."
+    - "Tiny python modules: mt_fetcher.pipeline + mt_fetcher.evidence (interfaces only; implementation incremental)."
+  invariants:
+    - "No targeted private-residence lookup automation in MT by default."
+    - "Evidence is first-class; every fetched artifact must be hashed + provenance-recorded."
+    - "HEE measures, never scores → MT measures (counts, deltas, freshness), never scores."
+    - "All automation must be non-interactive (no prompts) and deterministic."
+  pipeline_v1:
+    stages:
+      fetch:
+        output_root: "var/mt/fetch/raw/<run_id>/"
+        notes:
+          - "Fetchers can be manual-export-assisted (PDF/screenshot saved by oper) or programmatic (HTTP/API) where allowed."
+          - "Sources are declared as data (registry), not hardcoded."
+      evidence:
+        output_root: "var/mt/evidence/<run_id>/"
+        produces:
+          - "manifest.json (file list + sha256 + sizes)"
+          - "provenance.json (tool versions, time, source id, run id, inuid)"
+      normalize:
+        output_root: "var/mt/normalize/<run_id>/"
+        produces:
+          - "items.jsonl (canonical item records referencing evidence hashes)"
+        canonical_fields_min:
+          - "source_id"
+          - "retrieved_utc"
+          - "title"
+          - "url"
+          - "content_type"
+          - "raw_evidence_sha256"
+          - "tags"
+      summarize:
+        output_root: "var/mt/summaries/<run_id>/"
+        produces:
+          - "summary.md (brief human-readable)"
+          - "optional hee-obj cards (future): mt.research.digest.<run_id>.card.v1.yaml"
+  python_interfaces_v1:
+    module: "library/py/mt_fetcher"
+    pipeline:
+      entrypoint: "mt_fetcher.pipeline.run(cfg) -> RunResult"
+      cfg_min:
+        - "run_id"
+        - "source_id"
+        - "out_root"
+        - "mode: manual|http|api"
+    evidence:
+      entrypoint: "mt_fetcher.evidence.pack(run_root, files, meta) -> EvidencePack"
+      required:
+        - "sha256 for every artifact"
+        - "manifest + provenance written atomically (best-effort)"
+  next:
+    - "Define a source registry hee-obj in MT (optionally discoverable by DNS TXT later, but not required for v1)."
+    - "Implement one 'manual' source adapter (file drop) and one 'http' adapter (simple GET with caching disabled)."
+    - "Add a tiny POSIX wrapper stool (optional): tooling/bin/mt-fetch (future)."
