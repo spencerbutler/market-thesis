@@ -22,3 +22,11 @@ repos:
         entry: python3 scripts/validate_spec_integrity.py
         language: system
         pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: changelog-touch-on-behavior-change
+        name: CHANGELOG/DECISION_LOG touched on dashboard behavior change
+        entry: python3 scripts/check_changelog_touch.py
+        language: system
+        pass_filenames: false
