@@ -1,0 +1,47 @@
+Ticker,Name,Last Price,1-Day %,Quantity,Average Cost,Target,Purchase Date,Weight,Market Value,Total Gain/Loss %,Total Return (3M),CAGR Total Return (5Y),P/E (NTM),Revenues - Est YoY % (FY1E),Revenues - Est YoY % (FY2E)
+NVDA,NVIDIA Corporation,223.9600,0.0227,,,,,,,,0.0601,0.6156,N/A for download,N/A for download,N/A for download
+AMD,Advanced Micro Devices Inc.,483.3600,-0.0121,,,,,,,,0.1834,0.3438,N/A for download,N/A for download,N/A for download
+MSFT,Microsoft Corporation,499.9900,0.0003,,,,,,,,0.1908,0.1246,N/A for download,N/A for download,N/A for download
+AMZN,Amazon.com Inc.,274.4800,0.0082,,,,,,,,0.0122,0.1040,N/A for download,N/A for download,N/A for download
+GOOGL,Alphabet Inc.,354.3000,-0.0096,,,,,,,,-0.1092,0.2134,N/A for download,N/A for download,N/A for download
+META,Meta Platforms Inc.,592.1000,0.0037,,,,,,,,-0.0392,0.1043,N/A for download,N/A for download,N/A for download
+AVGO,Broadcom Inc.,427.7600,0.0171,,,,,,,,0.0385,0.5738,N/A for download,N/A for download,N/A for download
+MU,Micron Technology Inc.,877.5700,-0.0044,,,,,,,,0.3574,0.6138,N/A for download,N/A for download,N/A for download
+TSM,Taiwan Semiconductor Manufacturing Company Limited,420.0400,0.0044,,,,,,,,0.0161,0.3047,N/A for download,N/A for download,N/A for download
+ASML,ASML Holding N.V.,1740.9900,0.0215,,,,,,,,0.1492,0.1824,N/A for download,N/A for download,N/A for download
+AMAT,Applied Materials Inc.,539.1400,0.0221,,,,,,,,0.3146,0.3153,N/A for download,N/A for download,N/A for download
+LRCX,Lam Research Corporation,311.3500,0.0182,,,,,,,,0.0874,0.3826,N/A for download,N/A for download,N/A for download
+KLAC,KLA Corporation,198.1100,0.0253,,,,,,,,0.1250,0.4255,N/A for download,N/A for download,N/A for download
+ANET,Arista Networks Inc.,188.6700,-0.0190,,,,,,,,0.3310,0.5148,N/A for download,N/A for download,N/A for download
+CSCO,Cisco Systems Inc.,121.4300,0.0045,,,,,,,,0.3225,0.2020,N/A for download,N/A for download,N/A for download
+GLW,Corning Incorporated,165.6800,0.0541,,,,,,,,-0.0903,0.3569,N/A for download,N/A for download,N/A for download
+LITE,Lumentum Holdings Inc.,890.1700,0.0622,,,,,,,,-0.0027,0.6132,N/A for download,N/A for download,N/A for download
+COHR,Coherent Corp.,379.1300,0.1344,,,,,,,,0.1878,0.4081,N/A for download,N/A for download,N/A for download
+AAOI,Applied Optoelectronics Inc.,135.6300,0.0919,,,,,,,,-0.1391,0.8002,N/A for download,N/A for download,N/A for download
+VRT,Vertiv Holdings Co,272.4000,-0.0101,,,,,,,,-0.1987,0.5854,N/A for download,N/A for download,N/A for download
+DELL,Dell Technologies Inc.,453.7700,0.0368,,,,,,,,0.9739,0.5848,N/A for download,N/A for download,N/A for download
+HPE,Hewlett Packard Enterprise Company,53.2200,0.0151,,,,,,,,0.7971,0.3271,N/A for download,N/A for download,N/A for download
+EQIX,Equinix Inc.,1042.6200,-0.0097,,,,,,,,-0.0178,0.0699,N/A for download,N/A for download,N/A for download
+DLR,Digital Realty Trust Inc.,193.8000,0.0064,,,,,,,,0.0016,0.0790,N/A for download,N/A for download,N/A for download
+SMCI,Super Micro Computer Inc.,31.1300,0.0596,,,,,,,,-0.0741,0.5147,N/A for download,N/A for download,N/A for download
+STX,Seagate Technology Holdings plc,812.7600,-0.0471,,,,,,,,0.0612,0.5916,N/A for download,N/A for download,N/A for download
+WDC,Western Digital Corporation,434.3000,-0.0381,,,,,,,,-0.0636,0.5298,N/A for download,N/A for download,N/A for download
+NTAP,NetApp Inc.,189.5200,-0.0102,,,,,,,,0.6823,0.2089,N/A for download,N/A for download,N/A for download
+VST,Vistra Corp.,140.5900,-0.0056,,,,,,,,-0.0855,0.5266,N/A for download,N/A for download,N/A for download
+CEG,Constellation Energy Corporation,269.8900,0.0337,,,,,,,,-0.1316,,N/A for download,N/A for download,N/A for download
+ETN,Eaton Corporation plc,448.6800,0.0011,,,,,,,,0.1300,0.2446,N/A for download,N/A for download,N/A for download
+PWR,Quanta Services Inc.,671.8600,0.0060,,,,,,,,-0.1049,0.4889,N/A for download,N/A for download,N/A for download
+OKLO,Oklo Inc.,48.4200,0.1477,,,,,,,,-0.3259,0.3729,,,N/A for download
+BE,Bloom Energy Corporation,219.3400,-0.0420,,,,,,,,-0.1519,0.5878,N/A for download,N/A for download,N/A for download
+FCX,Freeport-McMoRan Inc.,69.6200,0.0211,,,,,,,,0.1514,0.1512,N/A for download,N/A for download,N/A for download
+MP,MP Materials Corp.,51.1100,0.0762,,,,,,,,-0.2607,0.0659,N/A for download,N/A for download,N/A for download
+USAR,USA Rare Earth Inc.,19.3300,0.1103,,,,,,,,-0.2672,,,N/A for download,N/A for download
+PANW,Palo Alto Networks Inc.,363.8600,0.0122,,,,,,,,0.8514,0.4134,N/A for download,N/A for download,N/A for download
+CRWD,CrowdStrike Holdings Inc.,214.4200,0.0339,,,,,,,,0.6960,0.2686,N/A for download,N/A for download,N/A for download
+FTNT,Fortinet Inc.,159.6400,-0.0029,,,,,,,,0.4786,0.2130,N/A for download,N/A for download,N/A for download
+NET,Cloudflare Inc.,300.2700,0.0557,,,,,,,,0.1693,0.2035,N/A for download,N/A for download,N/A for download
+FIVN,Five9 Inc.,33.9900,0.1981,,,,,,,,0.5311,-0.2993,N/A for download,N/A for download,N/A for download
+NTNX,Nutanix Inc.,62.6700,0.0424,,,,,,,,0.3645,0.1134,N/A for download,N/A for download,N/A for download
+SPCX,Space Exploration Technologies Corp.,133.1100,0.1583,,,,,,,,,,N/A for download,,N/A for download
+Weighted Average  ,-,-,0.0000,-,-,-,-,-,-,-,0.0000,0.0000,0.0,0.0000,0.0000
+Median  ,-,-,0.0161,-,-,-,-,-,-,-,0.0612,0.3438,30.4,0.3202,0.2179

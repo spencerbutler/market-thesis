@@ -1,0 +1,18 @@
+field,meaning,unit,frequency,source,notes
+company_id,Unique internal company identifier,,Static,Master,
+ticker,US-listed ticker or ADR,,Static,Master,
+company_name,Company name,,Static,Master,
+group,Primary AI group,,Static,Master,
+subgroup,Subgroup,,Static,Master,
+peer_rank,Peer rank,,Periodic,Model,
+ai_role,Role in AI stack,,Static,Research,
+period,Reporting period,,Quarterly,Source,
+revenue,Revenue,USD,Quarterly,Financial,
+revenue_yoy,Revenue YoY,%,Quarterly,Calculated,
+eps,Earnings per share,USD,Quarterly,Financial,
+eps_yoy,EPS YoY,%,Quarterly,Calculated,
+capex,Capital expenditures,USD,Quarterly,Financial,
+capex_yoy,Capex YoY,%,Quarterly,Calculated,
+inventory,Inventory,USD,Quarterly,Financial,
+inventory_yoy,Inventory YoY,%,Quarterly,Calculated,
+inventory_days,Inventory days,Days,Quarterly,Calculated

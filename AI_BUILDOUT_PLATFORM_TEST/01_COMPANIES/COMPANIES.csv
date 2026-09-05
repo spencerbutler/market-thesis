@@ -1,0 +1,45 @@
+company_id,ticker,company_name,group,subgroup,cap_tier,peer_rank,ai_role
+AI001,NVDA,NVIDIA,Compute,AI Accelerators,Large/Mega,,Compute
+AI002,AMD,AMD,Compute,AI Accelerators,Large/Mega,,Compute
+AI003,MSFT,Microsoft,Compute,Hyperscaler,Large/Mega,,Demand
+AI004,AMZN,Amazon,Compute,Hyperscaler,Large/Mega,,Demand
+AI005,GOOGL,Alphabet,Compute,Hyperscaler,Large/Mega,,Demand
+AI006,META,Meta,Compute,Hyperscaler,Large/Mega,,Demand
+AI007,AVGO,Broadcom,Compute,Custom Silicon,Large/Mega,,Compute
+AI008,MU,Micron,Semis,Memory,Large/Mega,,Memory
+AI009,TSM,TSMC,Semis,Foundry,Large/Mega,,Foundry
+AI010,ASML,ASML,Semis,Lithography,Large/Mega,,Equipment
+AI011,AMAT,Applied Materials,Semis,Equipment,Large/Mega,,Equipment
+AI012,LRCX,Lam Research,Semis,Equipment,Large/Mega,,Equipment
+AI013,KLAC,KLA,Semis,Inspection,Large/Mega,,Equipment
+AI014,ANET,Arista,Networking,Switching,Large/Mega,,Networking
+AI015,CSCO,Cisco,Networking,Switching,Large/Mega,,Networking
+AI016,GLW,Corning,Optics,Fiber,Large/Mega,,Optics
+AI017,LITE,Lumentum,Optics,Lasers,Large/Mega,,Optics
+AI018,COHR,Coherent,Optics,Lasers,Mid/Small,,Optics
+AI019,AAOI,Applied Opto,Optics,Transceivers,Mid/Small,,Optics
+AI020,VRT,Vertiv,Infrastructure,Cooling,Large/Mega,,Cooling
+AI021,DELL,Dell,Infrastructure,Servers,Large/Mega,,Compute Infra
+AI022,HPE,HPE,Infrastructure,Servers,Large/Mega,,Compute Infra
+AI023,EQIX,Equinix,Infrastructure,Data Centers,Large/Mega,,Data Centers
+AI024,DLR,Digital Realty,Infrastructure,Data Centers,Large/Mega,,Data Centers
+AI025,SMCI,Supermicro,Infrastructure,Servers,Mid/Small,,Compute Infra
+AI026,STX,Seagate,Storage,Drives,Large/Mega,,Storage
+AI027,WDC,Western Digital,Storage,Drives,Large/Mega,,Storage
+AI028,NTAP,NetApp,Storage,Enterprise,Large/Mega,,Storage
+AI029,VST,Vistra,Power,Generation,Large/Mega,,Power
+AI030,CEG,Constellation,Power,Nuclear,Large/Mega,,Power
+AI031,ETN,Eaton,Power,Electrical,Large/Mega,,Grid
+AI032,PWR,Quanta,Power,Grid Build,Large/Mega,,Grid
+AI033,OKLO,Oklo,Power,Nuclear,Mid/Small,,Power
+AI034,BE,Bloom,Power,Fuel Cells,Mid/Small,,Power
+AI035,FCX,Freeport,Materials,Copper,Large/Mega,,Materials
+AI036,MP,MP Materials,Materials,Rare Earths,Mid/Small,,Materials
+AI037,USAR,USA Rare Earth,Materials,Rare Earths,Mid/Small,,Materials
+AI038,PANW,Palo Alto,Cyber,Security,Large/Mega,,Cyber
+AI039,CRWD,CrowdStrike,Cyber,Security,Large/Mega,,Cyber
+AI040,FTNT,Fortinet,Cyber,Security,Large/Mega,,Cyber
+AI041,NET,Cloudflare,Software,Platform,Mid/Small,,AI Software
+AI042,FIVN,Five9,Software,CCaaS,Mid/Small,,AI Software
+AI043,NTNX,Nutanix,Software,Infra,Mid/Small,,AI Software
+AI044,SPCX,SpaceX,Watch,New Listing,Watch,,Thesis Core

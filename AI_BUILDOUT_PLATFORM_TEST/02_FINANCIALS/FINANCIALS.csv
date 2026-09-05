@@ -1,0 +1,3 @@
+company_id,period,revenue,revenue_yoy,eps,eps_yoy,capex,capex_yoy,inventory,inventory_yoy
+NVDA,2024Q1,26000,200,5.2,300,8000,150,5000,120
+AMD,2024Q1,6000,50,1.2,80,2000,40,3000,30

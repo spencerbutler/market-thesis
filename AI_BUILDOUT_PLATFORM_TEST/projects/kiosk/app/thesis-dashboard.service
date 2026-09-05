@@ -1,0 +1,30 @@
+# thesis-dashboard.service
+#
+# System-level systemd unit — the current-standard way to run a persistent
+# process as a specific service account on boot, no interactive login required.
+#
+# Deliberately thin: all real startup logic lives in start.sh, not here.
+# That maps directly onto a container later:
+#   ExecStart        -> Docker ENTRYPOINT/CMD
+#   WorkingDirectory  -> Dockerfile WORKDIR
+#   EnvironmentFile   -> docker run --env-file / k8s envFrom
+#   User/Group        -> Dockerfile USER / k8s securityContext.runAsUser
+#   Restart=on-failure -> restart policy / k8s livenessProbe + backoff
+#
+[Unit]
+Description=TCOS Thesis Dashboard / Claude-managed worker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=claude
+Group=claude
+WorkingDirectory=/home/claude/projects/kiosk/app
+EnvironmentFile=-/home/claude/projects/kiosk/app/.env
+ExecStart=/home/claude/projects/kiosk/app/start.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
